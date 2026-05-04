@@ -1,4 +1,4 @@
-<h1 class="text-2xl font-bold">{{ $title }}</h1>
+{{-- <h1 class="text-2xl font-bold">{{ $title }}</h1>
 @if(session('success'))
     <div class="bg-green-500 text-white px-4 py-2 rounded-md mb-4">
         {{ session('success') }}
@@ -21,4 +21,17 @@
     <li>Welcome back, {{ $user->name }}!</li>
     <li>Your email is {{ $user->email }}</li>
     <li>Your phone is {{ $user->phone }}</li>
-</ul>
+</ul> --}}
+
+@extends('layouts.user')
+
+@section('content')
+<h2>User Dashboard</h2>
+
+<div class="card">
+    <h3>Welcome, {{ auth()->user()->name }}</h3>
+    <p>Email: {{ auth()->user()->email }}</p>
+    <p>Role: {{ auth()->user()->role }}</p>
+</div>
+
+@endsection

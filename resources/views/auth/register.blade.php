@@ -1,4 +1,4 @@
-<h1 class="text-2xl font-bold">Register</h1>
+{{-- <h1 class="text-2xl font-bold">Register</h1>
 @if(session('success'))
     <div class="bg-green-500 text-white px-4 py-2 rounded-md mb-4">
         {{ session('success') }}
@@ -8,8 +8,8 @@
     <div class="bg-red-500 text-white px-4 py-2 rounded-md mb-4">
         {{ session('error') }}
     </div>
-@endif
-<form action="{{ route('register') }}" method="POST">
+@endif --}}
+{{-- <form action="{{ route('register') }}" method="POST">
     @csrf
     <div class="mb-4">
         <label for="name" class="block text-gray-700">Name</label>
@@ -26,7 +26,7 @@
     <div class="mb-4">  
         <label for="phone" class="block text-gray-700">Phone</label>
         <input type="text" name="phone" id="phone" class="form-input" required>
-    </div>
+    </div> --}}
     {{-- <div class="mb-4">
         <label for="address" class="block text-gray-700">Address</label>
         <input type="text" name="address" id="address" class="form-input" required>
@@ -47,6 +47,36 @@
         <label for="country" class="block text-gray-700">Country</label>
         <input type="text" name="country" id="country" class="form-input" required>
     </div> --}}
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Register</button>
+    {{-- <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md">Register</button>
     <p class="text-sm text-gray-500">Already have an account? <a href="{{ route('login') }}" class="text-blue-500 hover:text-blue-700">Login</a></p>
+</form> --}}
+
+{{-- New design code --}}
+
+@extends('layouts.auth')
+
+@section('content')
+<h2>Register</h2>
+
+<form method="POST" action="{{ route('register') }}">
+    @csrf
+    <label>Name</label>
+    <input type="text" name="name" placeholder="Enter Name" required>
+
+    <label>Email</label>
+    <input type="email" name="email" placeholder="Enter Email" required>
+
+    <label>Phone</label>
+    <input type="text" name="phone" placeholder="Enter Phone" required>
+
+    <label>Password</label>
+    <input type="password" name="password" placeholder="Enter Password" required>
+
+    <label>Confirm Password</label>
+    <input type="password" name="password_confirmation" placeholder="Confirm Password" required>
+
+    <button type="submit">Register</button>
 </form>
+
+<p>Already have an account? <a href="{{ route('login') }}">Login</a></p>
+@endsection

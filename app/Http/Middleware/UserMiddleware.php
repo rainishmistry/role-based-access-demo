@@ -16,9 +16,13 @@ class UserMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $user = Auth::user();
-        if(!Auth::check() || !$user->isUser()){
-            return redirect()->route('login')->with('error', 'You are not authorized to access this page.');
+        // $user = Auth::user();
+        // if(!Auth::check() || !$user->isUser()){
+        //     return redirect()->route('login')->with('error', 'You are not authorized to access this page.');
+        // }
+
+        if (!auth()->check() || auth()->user()->role !== 'user') {
+            return redirect()->route('login')->with('error', 'Unauthorized access!');
         }
         return $next($request);
     }

@@ -19,9 +19,9 @@ class AuthController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|string|min:8',
-            'phone' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|confirmed',
+            'phone' => 'required|integer',
             // 'address' => 'required|string|max:255',
             // 'city' => 'required|string|max:255',
             // 'state' => 'required|string|max:255',
@@ -57,27 +57,48 @@ class AuthController extends Controller
     {
         $request->validate([
             'email' => 'required|email',
-            'password' => 'required|string|min:8',
+            'password' => 'required',
         ]);
 
-        $user = User::where('email', $request->email)->first();
-        if (!$user) {
-            return redirect()->route('login')->with('error', 'Invalid email or password.');
+        // $user = User::where('email', $request->email)->first();
+        // if (!$user) {
+        //     return redirect()->route('login')->with('error', 'Invalid email or password.');
+        // }
+
+        // if (!Hash::check($request->password, $user->password)) {
+        //     return redirect()->route('login')->with('error', 'Invalid email or password.');
+        // }
+
+        // if (!$user->isActive()) {
+        //     return redirect()->route('login')->with('error', 'Your account is not active. Please contact the administrator.');
+        // }
+
+        // Auth::login($user);
+        // if($user->isAdmin()){
+        //     return redirect()->route('admin.dashboard')->with('success', 'Login successful. Welcome back, ' . $user->name . '!');
+        // }
+        // return redirect()->route('user.home')->with('success', 'Login successful. Welcome back, ' . $user->name . '!');
+
+
+        $credentials = $request->only('email', 'password');
+
+        if (Auth::attempt($credentials)) {
+
+            // Check status
+            if (auth()->user()->status == 0) {
+                Auth::logout();
+                return redirect()->route('login')->with('error', 'Your account is inactive. Please contact admin.');
+            }
+
+            // Role-based redirect
+            if (auth()->user()->role == 'admin') {
+                return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
+            } else {
+                return redirect()->route('user.home')->with('success', 'Login successful!');
+            }
         }
 
-        if (!Hash::check($request->password, $user->password)) {
-            return redirect()->route('login')->with('error', 'Invalid email or password.');
-        }
-
-        if (!$user->isActive()) {
-            return redirect()->route('login')->with('error', 'Your account is not active. Please contact the administrator.');
-        }
-
-        Auth::login($user);
-        if($user->isAdmin()){
-            return redirect()->route('admin.dashboard')->with('success', 'Login successful. Welcome back, ' . $user->name . '!');
-        }
-        return redirect()->route('user.home')->with('success', 'Login successful. Welcome back, ' . $user->name . '!');
+        return redirect()->back()->with('error', 'Invalid email or password!');
     }
 
     public function logout()

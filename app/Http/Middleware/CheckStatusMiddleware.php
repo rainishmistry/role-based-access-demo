@@ -17,9 +17,14 @@ class CheckStatusMiddleware
     public function handle(Request $request, Closure $next): Response
     {
         
-        $user = Auth::user();
-        if(!Auth::check() || !$user->isActive()){
-            return redirect()->route('login')->with('error', 'Your account is not active. Please contact the administrator.');
+        // $user = Auth::user();
+        // if(!Auth::check() || !$user->isActive()){
+        //     return redirect()->route('login')->with('error', 'Your account is not active. Please contact the administrator.');
+        // }
+
+        if (auth()->check() && auth()->user()->status == 0) {
+            Auth::logout();
+            return redirect()->route('login')->with('error', 'Your account is inactive.');
         }
         return $next($request);
     }

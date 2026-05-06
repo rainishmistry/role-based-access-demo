@@ -26,11 +26,20 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'status', 'admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('admin.dashboard');
 
+    // Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
+    // Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
+    // Route::put('/users/{id}/update', [AdminUserController::class, 'update'])->name('admin.users.update');
+    // Route::put('/users/{id}/status', [AdminUserController::class, 'changeStatus'])->name('admin.users.status');
+    // Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
+
+    // User Management Routes
     Route::get('/users', [AdminUserController::class, 'index'])->name('admin.users.index');
     Route::get('/users/{id}/edit', [AdminUserController::class, 'edit'])->name('admin.users.edit');
-    Route::put('/users/{id}/update', [AdminUserController::class, 'update'])->name('admin.users.update');
-    Route::put('/users/{id}/status', [AdminUserController::class, 'changeStatus'])->name('admin.users.status');
-    Route::delete('/users/{id}', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
+    Route::post('/users/{id}/update', [AdminUserController::class, 'update'])->name('admin.users.update');
+
+    Route::get('/users/{id}/status', [AdminUserController::class, 'changeStatus'])->name('admin.users.status');
+
+    Route::delete('/users/{id}/delete', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
 });
 
 Route::middleware(['auth', 'status', 'user'])->prefix('user')->group(function () {

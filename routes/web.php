@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\User\HomeController;
+use App\Http\Controllers\User\ProfileController;
 
 // Default route
 Route::get('/', function () {
@@ -44,4 +45,9 @@ Route::middleware(['auth', 'status', 'admin'])->prefix('admin')->group(function 
 
 Route::middleware(['auth', 'status', 'user'])->prefix('user')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->name('user.home');
+
+    // Profile routes
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('user.profile.edit');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('user.profile.update');
+    Route::post('/profile/password', [ProfileController::class, 'updatePassword'])->name('user.profile.password');
 });

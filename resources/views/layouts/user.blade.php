@@ -16,6 +16,7 @@
 <div class="header">
     <h2>User Panel</h2>
     <a href="{{ route('user.home') }}">Home</a>
+    <a href="{{ route('user.profile.edit') }}">Profile</a>
 
     <form method="POST" action="{{ route('logout') }}" style="display:inline;">
         @csrf

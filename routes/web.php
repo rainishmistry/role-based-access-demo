@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\User\HomeController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\Admin\ActivityLogController;
 
 // Default route
 Route::get('/', function () {
@@ -41,6 +42,8 @@ Route::middleware(['auth', 'status', 'admin'])->prefix('admin')->group(function 
     Route::get('/users/{id}/status', [AdminUserController::class, 'changeStatus'])->name('admin.users.status');
 
     Route::delete('/users/{id}/delete', [AdminUserController::class, 'destroy'])->name('admin.users.delete');
+
+    Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('admin.activity.logs');
 });
 
 Route::middleware(['auth', 'status', 'user'])->prefix('user')->group(function () {

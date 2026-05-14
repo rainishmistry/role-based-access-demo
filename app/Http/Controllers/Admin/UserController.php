@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Helpers\ActivityLogger;
 
 class UserController extends Controller
 {
@@ -58,13 +59,20 @@ class UserController extends Controller
             'name'    => 'required|string|max:100',
             'email'   => 'required|email|unique:users,email,' . $user->id,
             'phone'   => 'nullable|string|max:20',
+            'status'  => 'required|in:0,1',
         ]);
 
         $user->update([
             'name'    => $request->name,
             'email'   => $request->email,
             'phone'   => $request->phone,
+            'status'  => $request->status,
         ]);
+
+        ActivityLogger::log(
+            'update_user',
+            "Admin updated user: {$user->name} (ID: {$user->id})"
+        );
 
         return redirect()->route('admin.users.index')->with('success', 'User updated successfully!');
     }
@@ -85,6 +93,11 @@ class UserController extends Controller
 
         $user->status = !$user->status;
         $user->save();
+
+        ActivityLogger::log(
+            'change_status',
+            "Admin changed status of user: {$user->name} (ID: {$user->id})"
+        );
 
         return redirect()->back()->with('success', 'User status updated successfully!');
     }
@@ -110,6 +123,11 @@ class UserController extends Controller
         }
 
         $user->delete();
+
+        ActivityLogger::log(
+            'delete_user',
+            "Admin deleted user: {$user->name} (ID: {$user->id})"
+        );
 
         return redirect()->back()->with('success', 'User deleted successfully!');
     }

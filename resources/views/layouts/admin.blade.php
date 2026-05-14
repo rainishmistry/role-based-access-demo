@@ -27,6 +27,7 @@
     <h2>Admin Panel</h2>
     <a href="{{ route('admin.dashboard') }}">Dashboard</a>
     <a href="{{ route('admin.users.index') }}">Users</a>
+    <a href="{{ route('admin.activity.logs') }}">Activity Logs</a>
 
     <form method="POST" action="{{ route('logout') }}" style="display:inline;">
         @csrf

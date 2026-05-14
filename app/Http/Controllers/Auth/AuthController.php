@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use App\Helpers\ActivityLogger;
 
 class AuthController extends Controller
 {
@@ -90,6 +91,8 @@ class AuthController extends Controller
                 return redirect()->route('login')->with('error', 'Your account is inactive. Please contact admin.');
             }
 
+            ActivityLogger::log('login', 'User logged in successfully.');
+
             // Role-based redirect
             if (auth()->user()->role == 'admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
@@ -103,6 +106,7 @@ class AuthController extends Controller
 
     public function logout()
     {
+        ActivityLogger::log('logout', 'User logged out successfully.');
         Auth::logout();
         return redirect()->route('login')->with('success', 'Logout successful. Thank you for using our application.');
     }

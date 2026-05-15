@@ -12,6 +12,15 @@
         .alert-error { background: #f8d7da; padding: 10px; margin-bottom: 10px; }
         a { text-decoration: none; }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const timezoneElement = document.getElementById("timezone");
+            if (timezoneElement) {
+                const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                timezoneElement.value = timezone;
+            }
+        });
+    </script>
 </head>
 <body>
 

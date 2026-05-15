@@ -33,6 +33,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'timezone' => $request->timezone ?? 'Asia/Kolkata',
             'password' => Hash::make($request->password),
             'role' => 'user',
             'status' => 1,
@@ -85,16 +86,23 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
 
+            $user = auth()->user();
             // Check status
-            if (auth()->user()->status == 0) {
+            if ($user->status == 0) {
                 Auth::logout();
                 return redirect()->route('login')->with('error', 'Your account is inactive. Please contact admin.');
             }
 
             ActivityLogger::log('login', 'User logged in successfully.');
 
+            if (empty($user->timezone) && $request->timezone) {
+                $user->update([
+                    'timezone' => $request->timezone
+                ]);
+            }
+
             // Role-based redirect
-            if (auth()->user()->role == 'admin') {
+            if ($user->role == 'admin') {
                 return redirect()->route('admin.dashboard')->with('success', 'Welcome Admin!');
             } else {
                 return redirect()->route('user.home')->with('success', 'Login successful!');

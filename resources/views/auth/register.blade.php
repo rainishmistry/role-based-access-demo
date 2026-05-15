@@ -60,6 +60,7 @@
 
 <form method="POST" action="{{ route('register') }}">
     @csrf
+    <input type="hidden" name="timezone" id="timezone">
     <label>Name</label>
     <input type="text" name="name" placeholder="Enter Name" required>
 

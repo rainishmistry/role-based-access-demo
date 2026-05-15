@@ -101,7 +101,8 @@
                 {{ $log->user_agent }}
             </td>
 
-            <td>{{ $log->created_at->format('d-m-Y h:i A') }}</td>
+            <!-- <td>{{ $log->created_at->format('d-m-Y h:i A') }}</td> -->
+            <td>{{ user_time($log->created_at, 'd M Y, h:i A') }}</td>
         </tr>
         @empty
         <tr>

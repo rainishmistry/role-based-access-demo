@@ -32,7 +32,8 @@
 
 <form method="POST" action="{{ route('login') }}">
     @csrf
-    <label>Email</label>
+    <input type="hidden" name="timezone" id="timezone">
+    <label>Email checl</label>
     <input type="email" name="email" placeholder="Enter Email" required>
 
     <label>Password</label>

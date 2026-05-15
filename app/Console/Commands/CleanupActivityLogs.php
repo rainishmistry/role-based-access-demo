@@ -24,7 +24,7 @@ class CleanupActivityLogs extends Command
      */
     public function handle()
     {
-        $days = 1; // delete logs older than 3 days
+        $days = config('activitylog.cleanup_days', 3);
 
         // $sele = ActivityLog::where('created_at', '<', Carbon::now()->subDays($days))->ddRawSql();
         // $this->info($sele);

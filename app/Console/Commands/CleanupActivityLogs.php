@@ -26,8 +26,10 @@ class CleanupActivityLogs extends Command
     {
         $days = 1; // delete logs older than 3 days
 
+        // $sele = ActivityLog::where('created_at', '<', Carbon::now()->subDays($days))->ddRawSql();
+        // $this->info($sele);
+        
         $deleted = ActivityLog::where('created_at', '<', Carbon::now()->subDays($days))->forceDelete();
-
         $this->info("Deleted {$deleted} activity logs older than {$days} days.");
 
         ActivityLogger::log(

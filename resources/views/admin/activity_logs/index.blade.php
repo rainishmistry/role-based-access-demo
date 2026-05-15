@@ -27,6 +27,7 @@
                     <option value="update_user" {{ request('action') == 'update_user' ? 'selected' : '' }}>Update User</option>
                     <option value="change_status" {{ request('action') == 'change_status' ? 'selected' : '' }}>Change Status</option>
                     <option value="delete_user" {{ request('action') == 'delete_user' ? 'selected' : '' }}>Delete User</option>
+                    <option value="cleanup_activity_logs" {{ request('action') == 'cleanup_activity_logs' ? 'selected' : '' }}>Cleanup Activity Logs</option>
                 </select>
             </div>
 
@@ -83,6 +84,8 @@
                 @if($log->user)
                     {{ $log->user->name }} <br>
                     <small>{{ $log->user->email }}</small>
+                @elseif($log->action == 'cleanup_activity_logs')
+                    <span style="color:green;">System</span>
                 @else
                     <span style="color:red;">Deleted User</span>
                 @endif
